@@ -996,6 +996,8 @@ struct block_strided
     }
 };
 
+// Subwave reducers require the DPP implementation declared above.
+#if MIGRAPHX_HAS_DPP
 template <unsigned int SubWaveSize>
 struct subwave
 {
@@ -1075,6 +1077,7 @@ struct subwave
 };
 
 using wave = subwave<MIGRAPHX_WAVEFRONTSIZE>;
+#endif
 
 struct lane
 {
