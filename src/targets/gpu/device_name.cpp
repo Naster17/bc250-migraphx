@@ -130,13 +130,28 @@ static bool gfx_default_rocblas_impl(const std::string& gfx_name)
                 : (gfx_name == "gfx90a"));
 }
 
-bool gfx_default_rocblas() { return gfx_default_rocblas_impl(get_gfx_name(get_device_name())); }
+#endif
+
+bool gfx_default_rocblas()
+{
+#if MIGRAPHX_USE_HIPBLASLT
+    return gfx_default_rocblas_impl(get_gfx_name(get_device_name()));
+#else
+    return true;
+#endif
+}
 
 bool gfx_default_rocblas(const context& ctx)
 {
+#if MIGRAPHX_USE_HIPBLASLT
     return gfx_default_rocblas_impl(get_gfx_name(ctx.get_current_device().get_device_name()));
+#else
+    (void)ctx;
+    return true;
+#endif
 }
 
+#if MIGRAPHX_USE_HIPBLASLT
 static bool hipblaslt_supported_impl(const std::string& gfx_name)
 {
     return (gfx_name == "gfx90a" or (starts_with(gfx_name, "gfx94") and gfx_name >= "gfx942") or
