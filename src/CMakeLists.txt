@@ -457,7 +457,7 @@ endif()
 target_compile_definitions(migraphx PUBLIC MIGRAPHX_CXX_COMPILER="${CMAKE_CXX_COMPILER}")
 
 rocm_export_targets(
-  TARGETS migraphx::migraphx_c
+  TARGETS migraphx::c
   NAMESPACE migraphx::
   DEPENDS
     Threads
