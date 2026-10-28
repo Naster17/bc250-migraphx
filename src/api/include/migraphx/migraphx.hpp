@@ -1403,7 +1403,7 @@ struct program : MIGRAPHX_HANDLE_BASE(program)
         return pout;
     }
 
-    module get_main_module()
+    migraphx::module get_main_module()
     {
         migraphx_module_t p_modu;
         call(&migraphx_program_get_main_module, &p_modu, this->get_handle_ptr());
@@ -1417,7 +1417,7 @@ struct program : MIGRAPHX_HANDLE_BASE(program)
         return context{ctx, this->share_handle()};
     }
 
-    module create_module(const std::string& name)
+    migraphx::module create_module(const std::string& name)
     {
         migraphx_module_t p_modu;
         call(&migraphx_program_create_module, &p_modu, this->get_handle_ptr(), name.data());
