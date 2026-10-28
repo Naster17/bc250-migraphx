@@ -61,13 +61,15 @@ endfunction()
 
 # Compile the public wrapper as a C++20 consumer: an unqualified module return
 # type at the start of a line is parsed as a module directive by Clang.
-add_executable(test_api_cpp20_header EXCLUDE_FROM_ALL test_cpp20_header.cpp)
-target_link_libraries(test_api_cpp20_header PRIVATE migraphx_c)
-set_target_properties(test_api_cpp20_header PROPERTIES
-    CXX_STANDARD 20 CXX_STANDARD_REQUIRED YES CXX_SCAN_FOR_MODULES OFF)
-add_test(NAME test_api_cpp20_header COMMAND $<TARGET_FILE:test_api_cpp20_header>)
-add_dependencies(tests test_api_cpp20_header)
-add_dependencies(check test_api_cpp20_header)
+if("cxx_std_20" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
+    add_executable(test_api_cpp20_header EXCLUDE_FROM_ALL test_cpp20_header.cpp)
+    target_link_libraries(test_api_cpp20_header PRIVATE migraphx_c)
+    set_target_properties(test_api_cpp20_header PROPERTIES
+        CXX_STANDARD 20 CXX_STANDARD_REQUIRED YES CXX_SCAN_FOR_MODULES OFF)
+    add_test(NAME test_api_cpp20_header COMMAND $<TARGET_FILE:test_api_cpp20_header>)
+    add_dependencies(tests test_api_cpp20_header)
+    add_dependencies(check test_api_cpp20_header)
+endif()
 
 if(MIGRAPHX_ENABLE_ONNX)
 add_api_test(array_base test_array_base.cpp ${TEST_ONNX_DIR})
